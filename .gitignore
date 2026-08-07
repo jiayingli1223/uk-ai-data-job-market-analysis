@@ -1,0 +1,7 @@
+test_api.py
+.env
+data/
+*.csv
+.ipynb_checkpoints/
+__pycache__/
+.vscode/

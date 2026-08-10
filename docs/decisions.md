@@ -54,3 +54,63 @@ the same role posted through different agencies with distinct IDs.
 
 `id` deduplication alone will undercount duplicates and inflate skill
 frequencies for the affected employers. To be addressed during cleaning.
+## 2026-08-08 — Cleaning decisions
+
+**API `description` is truncated at 500 characters.** Across 1,433 raw
+records: median, 75th percentile and max are all exactly 500, and 99.8%
+end with an ellipsis. 500 characters typically covers only the company
+boilerplate, so skill extraction on this field would sample only JDs that
+happen to mention tools early. Sponsorship statements sit at the end of a
+JD and never appear at all. Full JD text must come from elsewhere.
+
+**`search_keyword` is unusable after deduplication.** A posting matched
+by several keywords keeps only the first one after `drop_duplicates`.
+Job family must be derived from `title` instead.
+
+**`region` is derived from `location.area[1]`**, which is a UK region,
+not a city. Searching "manchester" returns postings across North West
+England. Regional grouping is therefore at region level; city-level
+claims are not supported by this field.
+
+**68% of salaries are Adzuna estimates** (905 of 1,336). Only 431 are
+employer-stated. `salary_is_predicted` is the reliable filter; predicted
+values also carry non-integer decimals, but 13 records break that pattern
+so the decimal test is indicative only.
+
+**Salary distribution is right-skewed** (mean £70.5k, median £65k, max
+£370k, sd £41k). Report medians and quartiles; means are misleading here.
+The high tail is genuine — top records are research engineer roles at
+Anthropic and Wayve.
+
+**Nine records below £10k were dropped**: six give only an upper bound,
+two are day rates (£370, £250), one is a placeholder (£1). Day rates and
+placeholders cannot be reliably separated at this size, so all nine were
+removed, leaving 422.
+
+**Training providers pollute the employer field.** IT Online Learning,
+NEWTO TRAINING LIMITED and IT Career Switch appear as high-volume
+"employers" but sell courses rather than hire. Company names also carry
+case variants ("Anson Mccade" / "Anson McCade"), inflating the 658 unique
+company count. Both to be handled at the next cleaning pass.
+
+## 2026-08-09 — Full JD text is retrievable; collection is rate-limited
+
+**`redirect_url` resolves on adzuna.co.uk itself**, not the employer's
+site — no chained redirects to parse. Full JD text sits in the element
+with class `adp-body` (~6.5k chars). Extracting the whole page instead
+would inflate skill counts: the page footer carries a related-jobs block
+whose text would be counted as if it were the JD.
+
+**Term frequency within a JD is not a useful signal.** A senior ML
+engineering role mentions "python" once. Skill metrics must be the share
+of JDs containing a term, not total occurrences.
+
+**Scraping succeeded on 98 of 150 sampled postings** (47 HTTP 403, 5 HTTP
+404). Failures rise with cumulative requests — 77% success in the first
+75, 53% in the last 75 — so this is throttling, not a static block.
+
+Success rate varies by keyword: data analyst 49% (23/47) versus data
+scientist 76% (44/58). Request order was ruled out as the cause —
+keywords are evenly split across both halves of the run. Cause not yet
+established. Data analyst postings will be prioritised when topping up
+the sample.

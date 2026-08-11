@@ -114,3 +114,39 @@ scientist 76% (44/58). Request order was ruled out as the cause —
 keywords are evenly split across both halves of the run. Cause not yet
 established. Data analyst postings will be prioritised when topping up
 the sample.
+## 2026-08-10 — Skill matching requires more than word boundaries
+
+Naive substring matching is unusable: "r" matched 100% of JDs, "excel"
+58%, "scala" 39%, "rag" 49% — all as fragments of other words
+(excellent, scalable, average). Word boundaries fixed most of it.
+
+Four terms needed custom patterns beyond `\b`:
+- `r` still matched "R&D" (& is a valid boundary) — excluded explicitly
+- `excel` still matched the verb ("you'll excel at…") — excluded
+- `git` missed GitHub and GitLab, which do imply the skill — included
+- `sql` missed PostgreSQL, MySQL, NoSQL variants — included
+
+Manual review of 8 hits per term after correction found no false
+positives. Metric is share of JDs containing a term, never occurrence
+count: a senior ML role mentions "python" once.
+
+**"Manager" is not a seniority marker in UK job titles.** It appears in
+functional roles (Product Manager, Programme Manager) as often as in
+managerial ones, so it was removed from the lead pattern.
+
+**A zero in the sample is not a zero in the market.** No title in the
+183-JD sample contained "junior", which I initially read as a market
+characteristic. Checking all 1,336 titles found 15 (1.1%) — the sample
+simply missed them. Any claim about a category must be checked against
+the full title data before it is stated.
+
+**Entry-level roles are ~9% of all postings** (graduate 42, trainee 43,
+junior 15, placement 15, entry 2 of 1,336). The random JD sample
+contains only 13 graduate-level roles, where one posting moves a
+percentage by 7.7 points. The 2026-08-14 decision gate on AWS
+prevalence at graduate level cannot be answered at this sample size;
+entry-level postings will be scraped specifically.
+
+**Scraping throttle carries across days.** The 2026-08-10 run started at
+44% success rather than the 77% seen at the start of the previous day's
+run, having made ~300 requests the day before.

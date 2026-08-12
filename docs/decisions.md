@@ -150,3 +150,43 @@ entry-level postings will be scraped specifically.
 **Scraping throttle carries across days.** The 2026-08-10 run started at
 44% success rather than the 77% seen at the start of the previous day's
 run, having made ~300 requests the day before.
+## 2026-08-11 — Sponsorship status is mostly absent from JD text
+
+**87% of JDs say nothing about visa status** (187 of 214). Explicit
+refusals: 14 (6.5%). Explicit offers: 3 (1.4%). Ambiguous mentions: 10.
+
+This answers the original question in an unexpected way. The plan was to
+measure what share of postings refuse sponsorship and compare across job
+families. That comparison is not possible — any subgroup has single-digit
+counts. The usable finding is the absence itself: **sponsorship status
+cannot be determined from a job posting before applying**, so filtering a
+job pipeline on JD text is not viable. An external source is required.
+
+**Entry-level roles refuse more often.** Explicit refusal by seniority:
+graduate 7/41 (17.1%), senior 2/41 (4.9%), lead 1/25 (4.0%). Both
+graduate and senior groups have n=41, so the comparison is on equal
+footing. No graduate posting explicitly offered sponsorship. This is
+consistent with the Skilled Worker salary floor sitting above typical
+graduate pay. Absolute counts are small — direction is credible, magnitude
+is not.
+
+**Regex classification hit its ceiling at ~70% precision.** Manual review
+of all 20 classified records found four recurring failure modes:
+1. `unable to offer` vs `not able to offer` — different word order
+2. Contractions without apostrophes (`isnt`, `dont`)
+3. `sponsor` in non-visa senses: sponsoring industry registrations,
+   funding women's university degrees, a role titled "Sponsorship Analyst"
+4. Words inserted mid-phrase (`must have uk right to work`,
+   `only accept applicants for this role who have a right to work`)
+
+Modes 1–3 were fixed. Mode 4 was not: catching it needs loose separators
+that raise false positives, and each new batch brings new variants. Recall
+is therefore below precision — some refusals remain inside the 187
+`not_mentioned` records, so 6.5% is a floor, not an estimate.
+
+**Training providers were excluded before scraping.** Of 111 unscraped
+entry-level postings, 64 (58%) came from four course sellers advertising
+as employers: ITOL Recruit, IT Online Learning, NEWTO TRAINING LIMITED,
+IT Career Switch. Their text describes what a student would learn, not
+what a job requires, and would have distorted graduate-level skill
+frequencies. Scraping the remaining 47 yielded 31 JDs (66%).

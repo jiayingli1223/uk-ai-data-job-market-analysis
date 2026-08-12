@@ -190,3 +190,43 @@ as employers: ITOL Recruit, IT Online Learning, NEWTO TRAINING LIMITED,
 IT Career Switch. Their text describes what a student would learn, not
 what a job requires, and would have distorted graduate-level skill
 frequencies. Scraping the remaining 47 yielded 31 JDs (66%).
+## 2026-08-12 — External sponsor register recovers what JD text cannot
+
+Home Office Register of Licensed Sponsors (142,701 rows, 2026-08-12
+edition), filtered to the Skilled Worker route (122,767 rows), joined
+against employer names from the postings.
+
+Exact string matching hit 21 of 658 companies (3.2%). After
+normalisation — lowercase, strip `T/A` suffixes, `&`→`and`, drop
+punctuation and generic tokens (Ltd, Limited, UK, Group, Services,
+Solutions) — 263 of 658 matched (40.0%).
+
+**Normalisation trades false negatives for false positives.** Stripping
+generic tokens collapses distinct companies onto the same key: "Wise"
+(the fintech) matched "UK Wise Group Ltd", an unrelated organisation.
+Matches were therefore graded rather than treated as binary. A match is
+high-confidence when the normalised name is a distinctive token
+(convatec, gohenry, moniepoint); low when it is a common English word
+(wise, beyond, trace, salt) that will inevitably collide across 120k
+organisations.
+
+By posting: 27.3% high, 6.7% medium, 5.7% low, 60.3% unmatched.
+Excluding agencies, **344 postings (25.8%) can be verified as
+direct employers holding a Skilled Worker licence before applying** —
+against 1.4% derivable from JD text alone.
+
+**Agencies match at 12.3% versus 43.4% for direct employers, which is
+backwards.** Recruitment agencies employ consultants and are more likely
+to hold a licence, not less. The gap is a measurement artefact: agency
+listings use marketing names carrying business descriptions ("Harnham -
+Data & Analytics Recruitment", "Trace | Expert Accountancy & Finance
+Recruitment") that normalisation cannot reduce to a registered name.
+Agencies therefore drop out of the matched set for the wrong reason.
+This happens to help — an agency's licence says nothing about whether
+the end employer sponsors — but it is luck, not design. Improving name
+normalisation would pull agencies into the matched set and change what
+the 25.8% figure means.
+
+**Unmatched does not mean cannot sponsor.** The 806 unmatched postings
+carry an unknown share of false negatives. 344 is a floor on verifiable
+opportunities, not a count of viable ones.

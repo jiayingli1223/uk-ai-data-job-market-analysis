@@ -230,3 +230,11 @@ the 25.8% figure means.
 **Unmatched does not mean cannot sponsor.** The 806 unmatched postings
 carry an unknown share of false negatives. 344 is a floor on verifiable
 opportunities, not a count of viable ones.
+## 2026-08-12 — Note for cleanup
+
+Output filenames hard-code a date, and the date appears in several cells
+per notebook. Re-running `04_skills` against newer input overwrote the
+previous day's output because the save cell still carried the old date.
+No data was lost — raw JD text is retained — but the pattern is fragile.
+Replace with a single `RUN_DATE` constant, or drop dates from filenames
+entirely, during the 8/17 cleanup.

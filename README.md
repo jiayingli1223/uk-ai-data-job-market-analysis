@@ -40,6 +40,10 @@ be re-run freely, the collection ones cannot.
 
 ## Reproducing
 
+```bash
+pip install -r requirements.txt
+```
+
 1. Get an Adzuna API key at https://developer.adzuna.com/ and set
    `APP_ID` / `APP_KEY` at the top of `01_fetch.ipynb`.
 2. Download the Skilled Worker register from

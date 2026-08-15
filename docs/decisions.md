@@ -238,3 +238,54 @@ previous day's output because the save cell still carried the old date.
 No data was lost — raw JD text is retained — but the pattern is fragile.
 Replace with a single `RUN_DATE` constant, or drop dates from filenames
 entirely, during the 8/17 cleanup.
+## 2026-08-14 — Salary gaps between job families are a seniority artefact
+
+Job family assigned from `title` by ordered pattern matching, same
+approach as seniority. Order encodes precedence: ML engineer before
+software engineer so "Machine Learning Software Engineer" lands in ML;
+specific analyst types before a generic `analyst` catch-all.
+
+**Teaching roles and course adverts were excluded outright** (44
+postings): maths teacher listings pulled in by keyword overlap, and
+training providers advertising "Placement Programme No Experience
+Required" as if they were vacancies.
+
+Of 396 stated salaries, only four families clear n=38: data_analyst 87,
+data_scientist 86, other_analyst 66, ml_engineer 38. Software engineering
+(13), AI engineering (16) and data engineering (9) are reported nowhere —
+too few to support any statistic.
+
+**Headline medians suggest a 2.3x spread** — data analyst £46.0k, other
+analyst £57.9k, data scientist £83.3k, ML engineer £106.3k.
+
+**Splitting by seniority reverses it.** At graduate level the families
+converge: data analyst £40.0k (n=25), data scientist £35.0k (n=13), other
+analyst £34.0k (n=9). The separation appears only at senior level (£70.0k
+/ £95.0k / £65.0k). The headline spread mostly reflects family
+composition — 25 of 87 data analyst salaries are graduate-level against 2
+of 38 for ML engineering — not a premium attached to the family itself.
+ML engineering has too few graduate salaries (n=2) to include in the
+comparison, so the claim covers analyst and scientist families only.
+
+Range midpoints are used rather than `salary_min`: employers advertising a
+band typically pay inside it, so the lower bound understates.
+
+**Entry-level and senior postings ask for different tool categories.**
+Comparing graduate and senior postings (n=41 each), only three of 29
+skills above the 5% threshold are more common at graduate level, and all
+three are BI tools: Power BI (29.3% vs 4.9%), Excel (26.8% vs 9.8%),
+Tableau (17.1% vs 4.9%). Every other skill leans senior, led by Python
+(+29.3pp), Azure and Git (+22.0pp each). Git appears in zero graduate
+postings.
+
+**Skill co-occurrence was dropped.** With 214 JDs, the expected count for
+a pair like Python × AWS is around 18, and splitting by seniority puts
+every cell in single digits. Nothing at that size would survive being
+written down.
+
+**Chart titles describe, findings go in prose.** A first draft titled a
+chart "The gap between job families opens at senior level, not entry
+level" — a claim resting on cells of n=9 to n=25, and one the chart could
+not support for ML engineering at all, where the graduate bar is absent.
+Titles state what is plotted and carry n; the caveats live in text that
+has room for them.

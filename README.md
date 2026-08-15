@@ -52,7 +52,111 @@ here use the 2026-08-12 edition.
 
 ## Key findings
 
-<!-- TODO 8/16 -->
+### Sponsorship status is invisible in job postings, but recoverable from elsewhere
+
+87% of job descriptions say nothing about visa sponsorship. Explicit
+refusals appear in 6.5%, explicit offers in 1.4%. Reading postings is
+therefore not a way to filter a job search on sponsorship — the
+information mostly is not there.
+
+Joining employer names against the Home Office register of licensed
+sponsors changes that. After normalising company names and grading each
+match by how distinctive the matched token is, **344 of 1,336 postings
+(25.8%) can be confirmed as direct employers holding a Skilled Worker
+licence** — against the 1.4% derivable from the postings themselves.
+
+This is a floor rather than a census: 60% of employers do not match, and
+an unknown share of those are false negatives caused by trading names
+that differ from registered ones.
+
+### Entry-level and senior postings ask for different categories of tool
+
+Comparing graduate and senior postings (n=41 each, 68.3% London in both
+groups), 29 skills clear a 5% mention threshold. Only three are more
+common in graduate postings, and all three are BI tools:
+
+| Skill | Graduate | Senior |
+|---|---|---|
+| Power BI | 29.3% | 4.9% |
+| Excel | 26.8% | 9.8% |
+| Tableau | 17.1% | 4.9% |
+
+Every other skill leans senior — Python +29.3pp, Azure and Git +22.0pp
+each. Git is mentioned in no graduate posting at all.
+
+![Skills by seniority](figures/skills_graduate_vs_senior.png)
+
+### The salary gap between job families is mostly a seniority artefact
+
+Median advertised salaries in London separate cleanly by job family:
+data analyst £46k, other analyst £60k, data scientist £95k, ML engineer
+£122k.
+
+Splitting by seniority removes most of that separation. At graduate
+level the families converge — data analyst £40k (n=20), data scientist
+£35k (n=9), other analyst £34k (n=8) — and only diverge at senior level
+(£70k / £95k / £65k). The headline spread largely reflects which
+seniority levels each family's postings sit at: 20 of 69 data analyst
+salaries are graduate-level, against 2 of 32 for ML engineering.
+
+![Salary by family and seniority](figures/salary_by_family_and_level.png)
+
+Salary figures cover London only. London share varies by job family
+(84% for ML engineering, 61% for the other-analyst group), so pooling
+regions distorts comparisons between them as well as absolute levels.
+
+## Engineering notes
+
+The analysis above took nine days. Most of that time went into
+discovering that fields did not mean what their names suggested, and
+deciding what to do about it. The full record is in
+[`docs/decisions.md`](docs/decisions.md); the load-bearing decisions are
+these.
+
+**The API's `description` field is truncated at 500 characters.** Median,
+75th percentile and maximum are all exactly 500, and 99.8% of values end
+in an ellipsis — enough for a company boilerplate, not for a job
+specification. Sponsorship statements sit at the end of a posting and
+never survive at all. Skill extraction on this field would have sampled
+only postings that happen to mention tools early. Full text had to be
+scraped from the listing pages instead, which caps the JD-level analyses
+at a 214-posting sample rather than all 1,336.
+
+**Throttling accumulates across days, not just within a run.** Scraping
+held 77% success through the first 75 requests of one run and 53% through
+the last 75; the following day opened at 44% after roughly 300 requests
+the day before. Requests are spaced by a random 2–4 seconds, failures are
+recorded with their status code rather than dropped, and each batch
+reports success rate as it goes — so a run that degrades is visible while
+it is still running.
+
+**Keyword matching needs disambiguation, not just word boundaries.**
+Naive substring matching put "r" in 100% of postings and "excel" in 58%,
+as fragments of *report* and *excellent*. Word boundaries fixed most of
+it. Four terms needed more: `r` still matched *R&D*, `excel` still
+matched the verb, and `git` and `sql` were now missing GitHub and
+PostgreSQL, which do imply the skill. Manual review of eight hits per
+term found no remaining false positives.
+
+**Knowing where to stop.** Classifying visa statements hit a wall at
+roughly 70% precision. Three failure modes were fixable; the fourth —
+words inserted mid-phrase, as in *must have uk right to work* — needs
+loose separators that raise false positives, and every new batch of
+postings brings new variants. It was left unfixed and the recall gap
+documented, because the classified subset was 20 records and no amount of
+pattern work would change what could be concluded from it.
+
+**Collection and analysis are separate notebooks** because their re-run
+costs differ by orders of magnitude. Collection is bounded by a 250
+request/day API quota and by scraping throttle; analysis is local and
+runs in seconds. Keeping them in one file would mean triggering a
+half-hour collection every time a skill pattern changed.
+
+**A zero in the sample is not a zero in the market.** No posting in the
+214-JD sample had "junior" in its title, which read like a fact about UK
+hiring conventions. Checking all 1,336 titles found 15. Since then, any
+claim about a category gets checked against the full title data before it
+is written down.
 
 ## Limitations
 

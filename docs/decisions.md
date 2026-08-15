@@ -316,3 +316,30 @@ which does not alter how much weight those cells can carry: direction
 credible, magnitude not.
 
 Salary claims in the README will say London, not the UK.
+## 2026-08-15 — Sponsor status against salary: attempted, not concluded
+
+The question was whether postings from licensed sponsors differ from
+unmatched ones. Raw medians differ by £22.5k (£87.5k, n=56, versus
+£65.0k, n=310), but two confounders account for it and neither can be
+controlled at this sample size.
+
+Agencies make up 37.7% of unmatched postings against 17.9% of
+high-confidence ones — a direct consequence of the name-matching
+limitation recorded on 8/12, since agency listings carry marketing names
+that do not reduce to registered ones. Restricting to direct employers
+narrows the gap to £85k versus £65k but does not close it.
+
+Job family composition then explains most of what remains: 45.7% of
+high-confidence direct-employer salaries are data scientist roles against
+16.6% of unmatched ones, and the medium-confidence group is 37% ML
+engineering, which is why its median (£114k) sits above the
+high-confidence group's. Controlling for family as well leaves 21 versus
+32 records in the only cell large enough to look at.
+
+No conclusion is drawn. The comparison is recorded because the confounding
+structure is itself informative: which employers match the register is
+not independent of what kind of employer they are.
+
+## 2026-08-15 — Skill comparison is not affected by the regional skew
+
+The salary figures needed restricting to London because London

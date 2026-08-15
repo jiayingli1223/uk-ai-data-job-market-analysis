@@ -343,3 +343,20 @@ not independent of what kind of employer they are.
 ## 2026-08-15 — Skill comparison is not affected by the regional skew
 
 The salary figures needed restricting to London because London
+## 2026-08-16 — Credentials in notebooks
+
+API credentials live in a notebook cell and are cleared by hand before
+each commit. That held for nine days but not from the start: a key
+reached the history on 8/8 and survives in the diff of that commit, even
+though every current file is clean.
+
+The key was revoked rather than the history rewritten. Rewriting would
+change every commit hash, and the commit history is part of what this
+repository is meant to show; a free-tier key is not worth that trade.
+
+Two fixes before v2, in order of what they actually solve: move
+credentials to a gitignored `.env` read via `os.environ`, so they are
+never in a cell to begin with; and install `nbstripout` so notebook
+outputs are stripped at commit time rather than by memory. The second
+alone would not have prevented this — the key was in cell source, not
+output.

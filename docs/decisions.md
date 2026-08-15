@@ -289,3 +289,30 @@ level" — a claim resting on cells of n=9 to n=25, and one the chart could
 not support for ML engineering at all, where the graduate bar is absent.
 Titles state what is plotted and carry n; the caveats live in text that
 has room for them.
+## 2026-08-14 (later) — Salary figures restricted to London
+
+The headline medians above are inflated by sample composition, not by the
+job families themselves. For data scientist roles, `salary_min` alone has
+a median of £76.5k — high for the UK — and the reason is visible in the
+breakdown: 73% of those postings are London, and senior plus lead account
+for 42% of them against 15% graduate.
+
+The skew is structural. London returns far more postings per keyword than
+any other region (2,316 versus 160 for "data scientist" in Manchester),
+and the 250-record page cap only ever binds in London, so a fixed number
+of keywords across five regions cannot produce a nationally balanced
+sample.
+
+London share also varies by family — 84% for ML engineering against 61%
+for the other-analyst group — so pooling regions distorts between-family
+comparisons too, not just absolute levels.
+
+**All salary figures are therefore restricted to London** (237 of 396
+stated salaries). Medians at graduate and senior level are unchanged by
+this restriction — data analyst £40k/£70k, data scientist £35k/£95k,
+other analyst £34k/£65k — so the earlier finding stands; only the stated
+scope changes. Sample sizes shrink (data scientist graduate n=13 → 9),
+which does not alter how much weight those cells can carry: direction
+credible, magnitude not.
+
+Salary claims in the README will say London, not the UK.

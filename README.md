@@ -34,6 +34,7 @@ Notebooks run in order. Each writes to `data/` and the next reads from it.
 | `04_skills.ipynb` | Skill matching, seniority classification | Low |
 | `05_sponsorship.ipynb` | Classify visa statements in JD text | Low |
 | `06_sponsors.ipynb` | Match employers to the sponsor register | Low |
+| `07_eda.ipynb` | Job family classification, salary analysis, charts | Low |
 
 Collection and analysis are split deliberately: the analysis notebooks can
 be re-run freely, the collection ones cannot.
@@ -190,5 +191,6 @@ data/
   external/     # Home Office register (gitignored)
 docs/
   decisions.md  # why each analytical choice was made
-notebooks/
+figures/        # charts referenced above (committed)
+notebooks/      # 01-07, run in order
 ```
